@@ -77,7 +77,7 @@ public class GameService : IGameService
     {
         if (team is null)
         {
-            throw new ArgumentNullException("Team with the specified id does not exist");
+            throw new ArgumentNullException("Team", "Team with the specified id does not exist");
         }
 
         if (!team.ContainsUser(username))

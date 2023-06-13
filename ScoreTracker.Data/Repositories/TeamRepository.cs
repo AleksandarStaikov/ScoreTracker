@@ -5,6 +5,7 @@ using ScoreTracker.Common.Models.Game;
 using ScoreTracker.Common.Models.Team;
 using ScoreTracker.Data.Entities.Game;
 using ScoreTracker.Data.Entities.Team;
+using ScoreTracker.Data.Entities.User;
 using ScoreTracker.Data.Interfaces;
 
 namespace ScoreTracker.Data.Repositories;
@@ -67,7 +68,20 @@ public class TeamRepository : ITeamRepository
 
     public async Task<Team?> GetTeamByTeamId(string teamId)
     {
-        var teamEntity = await _teams.Find(x => x.TeamId == teamId).FirstOrDefaultAsync();
+        // TODO : Projection to be added
+        //var projection = new ProjectionDefinitionBuilder<TeamEntity>()
+        //        .Include(t => t.RedWins)
+        //        .Include(t => t.BlackWins)
+        //        .Include(t => t.ClubsUsername)
+        //        .Include(t => t.HeartsUsername)
+        //        .Include(t => t.DiamodsUsername)
+        //        .Include(t => t.SpadesUsername)
+        //        .Include(t => t.Games)
+        //        .Slice(u => u.Games, 0, 10);
+
+        var teamEntity = await _teams
+            .Find(x => x.TeamId == teamId)
+            .FirstOrDefaultAsync();
 
         return _mapper.Map<Team?>(teamEntity);
     }

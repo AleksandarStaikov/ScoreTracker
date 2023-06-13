@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreTracker.Data", "ScoreT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreTracker.Common", "ScoreTracker.Common\ScoreTracker.Common.csproj", "{E770CCEA-7196-46BD-9FE3-73D3B7783718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoreTracker.WebApi", "ScoreTracker.WebApi\ScoreTracker.WebApi.csproj", "{003FFEFD-FC30-472C-9F46-ECD78C217AEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreTracker.WebApi", "ScoreTracker.WebApi\ScoreTracker.WebApi.csproj", "{003FFEFD-FC30-472C-9F46-ECD78C217AEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoreTracker.ConsoleRunner", "ScoreTracker.ConsoleRunner\ScoreTracker.ConsoleRunner.csproj", "{134EADDD-14A6-4216-B78C-89210FEE8F41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{003FFEFD-FC30-472C-9F46-ECD78C217AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003FFEFD-FC30-472C-9F46-ECD78C217AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003FFEFD-FC30-472C-9F46-ECD78C217AEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134EADDD-14A6-4216-B78C-89210FEE8F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134EADDD-14A6-4216-B78C-89210FEE8F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134EADDD-14A6-4216-B78C-89210FEE8F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134EADDD-14A6-4216-B78C-89210FEE8F41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
