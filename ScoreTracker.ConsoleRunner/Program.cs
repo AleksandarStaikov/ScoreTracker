@@ -1,16 +1,18 @@
 ﻿using BenchmarkDotNet.Running;
+using Microsoft.Extensions.DependencyInjection;
 using ScoreTracker.ConsoleRunner;
 using ScoreTracker.ConsoleRunner.Benchmarking;
+using ScoreTracker.ConsoleRunner.Runner.Interfaces;
 
+var initialCommand = new[] { "help" }; //args;
 
-var serviceProvider = DependencyInjectionProvider.GetServiceProvider();
-
-//await serviceProvider
-//     .GetRequiredService<IDataSeeder>()
-//     .AddGames(10, "647b345e162514c8101d953b", "7iSDSd6liDqGtqwTRqG4f1qaM03XeLIR@clients");
+DependencyInjectionProvider
+    .GetServiceProvider()
+    .GetRequiredService<IRunner>()
+    .Run(initialCommand);
 
 //BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
 
-var summary = BenchmarkRunner.Run<GetTeamBenchmarking>();
+//var summary = BenchmarkRunner.Run<GetTeamBenchmarking>();
 
 Console.ReadKey();

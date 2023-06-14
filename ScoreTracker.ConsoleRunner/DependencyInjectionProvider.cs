@@ -1,11 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ScoreTracker.ConsoleRunner.Common;
+using ScoreTracker.ConsoleRunner.Common.Interfaces;
 using ScoreTracker.ConsoleRunner.Imports;
+using ScoreTracker.ConsoleRunner.Runner;
+using ScoreTracker.ConsoleRunner.Runner.Interfaces;
 using ScoreTracker.Data;
+using System.Reflection;
 
 namespace ScoreTracker.ConsoleRunner;
 
-public class DependencyInjectionProvider
+public static class DependencyInjectionProvider
 {
     public static IServiceProvider GetServiceProvider()
     {
@@ -15,13 +20,29 @@ public class DependencyInjectionProvider
        .Build();
 
         var services = new ServiceCollection()
+            .ExternalDependencies(configuration)
             .AddTransient<IDataSeeder, DataSeeder>()
-            .AddData(configuration)
-            .AddScoreTracker(configuration)
-            .AddLogging();
+            .AddSingleton<ICommandFactory, CommandFactory>()
+            .AddSingleton<ICommunicationHub, CommunicationHub>()
+            .AddSingleton<IRunner, Runner.Runner>();
+
+        //CommandLocator
+        //    .GetAllCommandsInAssembly()
+        //    .Select(command => );
+
+        foreach (var command in CommandLocator.GetAllCommandsInAssembly())
+        {
+            services.AddTransient(command);
+        }
+
 
         IServiceProvider serviceProvider = services.BuildServiceProvider();
 
         return serviceProvider;
     }
+
+    public static IServiceCollection ExternalDependencies(this IServiceCollection services, IConfigurationRoot configuration)
+        => services.AddData(configuration)
+            .AddScoreTracker(configuration)
+            .AddLogging();
 }

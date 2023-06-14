@@ -5,8 +5,8 @@ using ScoreTracker.Common.Models.Game;
 using ScoreTracker.Common.Models.Team;
 using ScoreTracker.Data.Entities.Game;
 using ScoreTracker.Data.Entities.Team;
-using ScoreTracker.Data.Entities.User;
 using ScoreTracker.Data.Interfaces;
+using System.Linq.Expressions;
 
 namespace ScoreTracker.Data.Repositories;
 
@@ -66,25 +66,7 @@ public class TeamRepository : ITeamRepository
         return team;
     }
 
-    public async Task<Team?> GetTeamByTeamId(string teamId)
-    {
-        // TODO : Projection to be added
-        //var projection = new ProjectionDefinitionBuilder<TeamEntity>()
-        //        .Include(t => t.RedWins)
-        //        .Include(t => t.BlackWins)
-        //        .Include(t => t.ClubsUsername)
-        //        .Include(t => t.HeartsUsername)
-        //        .Include(t => t.DiamodsUsername)
-        //        .Include(t => t.SpadesUsername)
-        //        .Include(t => t.Games)
-        //        .Slice(u => u.Games, 0, 10);
-
-        var teamEntity = await _teams
-            .Find(x => x.TeamId == teamId)
-            .FirstOrDefaultAsync();
-
-        return _mapper.Map<Team?>(teamEntity);
-    }
+    public async Task<Team?> GetTeamByTeamId(string teamId) => await GetTeam(x => x.TeamId == teamId);
 
     public Task AddGameToTeam(string teamId, GameOverview gameOverview)
     {
@@ -100,4 +82,62 @@ public class TeamRepository : ITeamRepository
                         .Push(p => p.Games, gameOverviewEntity)
                         .Inc(propertyToUpdate, 1u));
     }
+
+
+    #region PerformanceTesting
+
+    public async Task<Team>? GetTeamWithPredicateAndProjection(string teamId, int projectionSize)
+        => await GetTeam(x => x.TeamId == teamId, TeamProjection(projectionSize));
+
+    public async Task<Team>? GetTeamWithPredicate(string teamId)
+        => await GetTeam(x => x.TeamId == teamId);
+
+    public async Task<Team>? GetTeamWithFilterAndProjection(string teamId, int projectionSize)
+        => await GetTeam(new FilterDefinitionBuilder<TeamEntity>().Eq(x => x.TeamId, teamId), TeamProjection(projectionSize));
+
+    public async Task<Team>? GetTeamWithFilter(string teamId)
+        => await GetTeam(new FilterDefinitionBuilder<TeamEntity>().Eq(x => x.TeamId, teamId));
+
+    #endregion
+
+    private async Task<Team?> GetTeam(Expression<Func<TeamEntity, bool>> predicate, ProjectionDefinition<TeamEntity>? projection = null)
+    {
+        var query = _teams.Find(predicate);
+
+        if (projection != null)
+        {
+            query = query.Project<TeamEntity>(projection);
+        }
+
+        var teamEntity = await query.FirstOrDefaultAsync();
+
+        return _mapper.Map<Team?>(teamEntity);
+    }
+
+    private async Task<Team>? GetTeam(FilterDefinition<TeamEntity> filter, ProjectionDefinition<TeamEntity>? projection = null)
+    {
+        var query = _teams.Find(filter);
+
+        if (projection != null)
+        {
+            query = query.Project<TeamEntity>(projection);
+        }
+
+        var teamEntity = await query.FirstOrDefaultAsync();
+
+        return _mapper.Map<Team?>(teamEntity);
+    }
+
+
+    public ProjectionDefinition<TeamEntity> TeamProjection(int size) =>
+        new ProjectionDefinitionBuilder<TeamEntity>()
+            .Include(t => t.RedWins)
+            .Include(t => t.BlackWins)
+            .Include(t => t.ClubsUsername)
+            .Include(t => t.HeartsUsername)
+            .Include(t => t.DiamodsUsername)
+            .Include(t => t.SpadesUsername)
+            .Include(t => t.Games)
+            .Slice(u => u.Games, 0, size);
+
 }
