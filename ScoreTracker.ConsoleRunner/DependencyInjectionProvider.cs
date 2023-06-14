@@ -26,10 +26,6 @@ public static class DependencyInjectionProvider
             .AddSingleton<ICommunicationHub, CommunicationHub>()
             .AddSingleton<IRunner, Runner.Runner>();
 
-        //CommandLocator
-        //    .GetAllCommandsInAssembly()
-        //    .Select(command => );
-
         foreach (var command in CommandLocator.GetAllCommandsInAssembly())
         {
             services.AddTransient(command);
