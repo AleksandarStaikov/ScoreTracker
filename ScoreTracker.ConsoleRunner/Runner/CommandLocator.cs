@@ -1,8 +1,8 @@
 ﻿using ScoreTracker.ConsoleRunner.Runner.Interfaces;
-using System.Reflection;
 
 namespace ScoreTracker.ConsoleRunner.Runner;
 
+// TODO : Might need to convert it to normal class to use with DI for testing
 public static class CommandLocator
 {
     private static IList<Type> _commandTypes = null!;

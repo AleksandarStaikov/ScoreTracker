@@ -1,6 +1,8 @@
-﻿namespace ScoreTracker.ConsoleRunner.Runner.Interfaces;
+﻿using ScoreTracker.ConsoleRunner.Common;
+
+namespace ScoreTracker.ConsoleRunner.Runner.Interfaces;
 
 public interface ICommandFactory
 {
-    ICommand? ResolveCommand(string commandName);
+    ICommand? ResolveCommand(CommandBody commandBody);
 }

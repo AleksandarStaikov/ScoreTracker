@@ -1,14 +1,30 @@
-﻿using ScoreTracker.ConsoleRunner.Runner.Interfaces;
+﻿using ScoreTracker.ConsoleRunner.Common;
+using ScoreTracker.ConsoleRunner.Common.Interfaces;
+using ScoreTracker.ConsoleRunner.Runner.Interfaces;
 
 namespace ScoreTracker.ConsoleRunner.Runner;
 
 public class Runner : IRunner
 {
     private readonly ICommandFactory _commandFactory;
+    private readonly ICommunicationHub _communicationHub;
+    private readonly IConsoleWritter _consoleWritter;
 
-    public Runner(ICommandFactory commandFactory)
+    public Runner(ICommandFactory commandFactory,
+        ICommunicationHub communicationHub,
+        IConsoleWritter consoleWritter)
     {
         _commandFactory = commandFactory;
+        _communicationHub = communicationHub;
+        _consoleWritter = consoleWritter;
+    }
+
+    public IRunner SetupRunner()
+    {
+        // TODO : This does not seem appropriate
+        _communicationHub.Subscribe(_consoleWritter.Write);
+
+        return this;
     }
 
     public void Run(string[] commandSegments)
@@ -24,11 +40,10 @@ public class Runner : IRunner
 
     private void ProcessCommand(string[] commandSegments)
     {
-        var commandName = commandSegments[0].ToLower();
-        var commandParams = commandSegments[1..];
+        var commandBody = new CommandBody(commandSegments);
 
         _commandFactory
-                .ResolveCommand(commandName)?
-                .Execute(commandParams);
+                .ResolveCommand(commandBody)?
+                .Execute(commandBody);
     }
 }

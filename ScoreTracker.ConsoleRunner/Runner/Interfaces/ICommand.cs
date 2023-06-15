@@ -1,6 +1,8 @@
-﻿namespace ScoreTracker.ConsoleRunner.Runner.Interfaces;
+﻿using ScoreTracker.ConsoleRunner.Common;
+
+namespace ScoreTracker.ConsoleRunner.Runner.Interfaces;
 
 public interface ICommand
 {
-    public void Execute(string[] commandSegments);
+    public void Execute(CommandBody commandSegments);
 }

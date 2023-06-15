@@ -21,11 +21,13 @@ public class CommandFactory : ICommandFactory
         _communicationHub = communicationHub;
     }
 
-    public ICommand? ResolveCommand(string commandName)
+    public ICommand? ResolveCommand(CommandBody commandBody)
     {
-        if (!_availableCommands.TryGetValue(commandName, out var commandType))
+        if (!_availableCommands.TryGetValue(commandBody.CommandName, out var commandType))
         {
-            _communicationHub.PublichMessage(new Message($"Command '{commandName}' not found! Type 'help' to get more information", MessageSeverity.Error));
+            _communicationHub.PublichMessage(new Message($"Command '{commandBody.CommandName}' not found! Type 'help' to get more information", MessageSeverity.Error));
+
+            return null;
         }
 
         return _serviceProvider.GetRequiredService(commandType!) as ICommand;       

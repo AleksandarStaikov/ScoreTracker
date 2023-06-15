@@ -22,6 +22,7 @@ public static class DependencyInjectionProvider
         var services = new ServiceCollection()
             .ExternalDependencies(configuration)
             .AddTransient<IDataSeeder, DataSeeder>()
+            .AddSingleton<IConsoleWritter, ConsoleWritter>()
             .AddSingleton<ICommandFactory, CommandFactory>()
             .AddSingleton<ICommunicationHub, CommunicationHub>()
             .AddSingleton<IRunner, Runner.Runner>();

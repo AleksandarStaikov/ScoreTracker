@@ -1,7 +1,7 @@
-﻿namespace ScoreTracker.ConsoleRunner.Runner.Interfaces
+﻿namespace ScoreTracker.ConsoleRunner.Runner.Interfaces;
+
+public interface IRunner
 {
-    public interface IRunner
-    {
-        void Run(string[] initialCommand);
-    }
+    IRunner SetupRunner();
+    void Run(string[] initialCommand);
 }
