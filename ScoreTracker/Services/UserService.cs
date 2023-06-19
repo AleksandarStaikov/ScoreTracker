@@ -26,7 +26,7 @@ public class UserService : IUserService
 
     public async Task CreateUser(CreateUserDto newUser)
     {
-        if (await IsUsernameAvailable(newUser.Username))
+        if (!await IsUsernameAvailable(newUser.Username))
         {
             _logger.LogWarning("Trying to set a taken username");
             throw new InvalidOperationException("Trying to set a taken username");

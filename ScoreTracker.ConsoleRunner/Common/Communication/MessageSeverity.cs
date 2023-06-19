@@ -1,6 +1,6 @@
 ﻿using CarRentalSystem.Domain.Common;
 
-namespace ScoreTracker.ConsoleRunner.Common;
+namespace ScoreTracker.ConsoleRunner.Common.Communication;
 
 public class MessageSeverity : Enumeration
 {

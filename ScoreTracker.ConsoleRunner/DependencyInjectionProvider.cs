@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ScoreTracker.ConsoleRunner.Common;
+using ScoreTracker.Common.Extensions;
+using ScoreTracker.ConsoleRunner.Common.Communication;
 using ScoreTracker.ConsoleRunner.Common.Interfaces;
 using ScoreTracker.ConsoleRunner.Imports;
+using ScoreTracker.ConsoleRunner.Imports.Interfaces;
 using ScoreTracker.ConsoleRunner.Runner;
 using ScoreTracker.ConsoleRunner.Runner.Interfaces;
 using ScoreTracker.Data;
@@ -22,6 +24,7 @@ public static class DependencyInjectionProvider
         var services = new ServiceCollection()
             .ExternalDependencies(configuration)
             .AddTransient<IDataSeeder, DataSeeder>()
+            .AddAsSingleton<IImporter>(typeof(DependencyInjectionProvider).Assembly)
             .AddSingleton<IConsoleWritter, ConsoleWritter>()
             .AddSingleton<ICommandFactory, CommandFactory>()
             .AddSingleton<ICommunicationHub, CommunicationHub>()

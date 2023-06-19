@@ -1,6 +1,6 @@
 ﻿using ScoreTracker.ConsoleRunner.Common.Interfaces;
 
-namespace ScoreTracker.ConsoleRunner.Common;
+namespace ScoreTracker.ConsoleRunner.Common.Communication;
 
 public class ConsoleWritter : IConsoleWritter
 {

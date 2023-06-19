@@ -1,8 +1,10 @@
-﻿using ScoreTracker.ConsoleRunner.Common;
+﻿using ScoreTracker.ConsoleRunner.Common.Communication;
 
 namespace ScoreTracker.ConsoleRunner.Imports.Interfaces;
 
 public interface IImporter
 {
-    public void Import(CommandBody importer);
+    bool CanImport(CommandBody commandBody);
+
+    void Import(CommandBody commandBody);
 }

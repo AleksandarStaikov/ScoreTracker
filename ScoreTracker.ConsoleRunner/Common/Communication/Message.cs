@@ -1,9 +1,10 @@
-﻿namespace ScoreTracker.ConsoleRunner.Common;
+﻿namespace ScoreTracker.ConsoleRunner.Common.Communication;
 
 public record Message
 {
-    public Message(string value) : 
-        this(value, MessageSeverity.Info) { }
+    public Message(string value) :
+        this(value, MessageSeverity.Info)
+    { }
 
     public Message(string value, MessageSeverity severity)
     {

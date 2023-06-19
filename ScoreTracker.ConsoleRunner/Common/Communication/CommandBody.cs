@@ -1,4 +1,4 @@
-﻿namespace ScoreTracker.ConsoleRunner.Common;
+﻿namespace ScoreTracker.ConsoleRunner.Common.Communication;
 
 public class CommandBody
 {
@@ -25,6 +25,7 @@ public class CommandBody
             if (IsPositionalArgument(segment))
             {
                 _positionalArguments.Add(segment);
+                continue;
             }
 
             if (IsArgumentName(segment))
@@ -36,7 +37,10 @@ public class CommandBody
 
                 _namedArguments.Add(segment.Substring(2), _allArguments[i + 1]);
                 i++;
+                continue;
             }
+
+            throw new InvalidDataException($"Command segment {segment} could not be interpreted");
         }
     }
 
@@ -50,7 +54,7 @@ public class CommandBody
 
     private bool IsPositionalArgument(string segment) => !segment.StartsWith("-");
 
-    private bool IsFlag(string segment) => segment.StartsWith("--");
+    private bool IsFlag(string segment) => segment.StartsWith("-") && !segment.StartsWith("--");
 
-    private bool IsArgumentName(string segment) => segment.StartsWith("-") && !segment.StartsWith("--");
+    private bool IsArgumentName(string segment) => segment.StartsWith("--") ;
 }

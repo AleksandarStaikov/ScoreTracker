@@ -1,5 +1,6 @@
-﻿using ScoreTracker.ConsoleRunner.Common;
+﻿using ScoreTracker.ConsoleRunner.Common.Communication;
 using ScoreTracker.ConsoleRunner.Common.Interfaces;
+using ScoreTracker.ConsoleRunner.Imports.Interfaces;
 using ScoreTracker.ConsoleRunner.Runner.Interfaces;
 using System.Text;
 
@@ -7,16 +8,23 @@ namespace ScoreTracker.ConsoleRunner.Imports;
 
 public class Import : ICommand
 {
+    private readonly IEnumerable<IImporter> _importers;
     private readonly ICommunicationHub _communicationHub;
 
-    public Import(ICommunicationHub communicationHub)
+    public Import(IEnumerable<IImporter> importers, 
+        ICommunicationHub communicationHub)
     {
+        _importers = importers;
         _communicationHub = communicationHub;
     }
 
     public void Execute(CommandBody commandBody)
     {
         if (IsHelp(commandBody)) { Help(); }
+
+        var importer = _importers.Single(x => x.CanImport(commandBody));
+
+        importer.Import(commandBody);
     }
 
     private void Help()
@@ -33,5 +41,4 @@ public class Import : ICommand
     private bool IsHelp(CommandBody commandBody)
         => commandBody.PositionalArguments.Any() &&
             commandBody.Arguments.First().ToLower() == nameof(Help).ToLower();
-
 }

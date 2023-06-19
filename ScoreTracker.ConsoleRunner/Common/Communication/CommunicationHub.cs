@@ -1,6 +1,6 @@
 ﻿using ScoreTracker.ConsoleRunner.Common.Interfaces;
 
-namespace ScoreTracker.ConsoleRunner.Common;
+namespace ScoreTracker.ConsoleRunner.Common.Communication;
 
 internal class CommunicationHub : ICommunicationHub
 {
@@ -10,7 +10,7 @@ internal class CommunicationHub : ICommunicationHub
     {
         foreach (var subscriber in _subscribers)
         {
-            subscriber.Invoke(message);    
+            subscriber.Invoke(message);
         }
     }
 

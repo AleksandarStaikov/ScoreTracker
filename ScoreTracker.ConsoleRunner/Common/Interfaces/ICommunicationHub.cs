@@ -1,4 +1,6 @@
-﻿namespace ScoreTracker.ConsoleRunner.Common.Interfaces;
+﻿using ScoreTracker.ConsoleRunner.Common.Communication;
+
+namespace ScoreTracker.ConsoleRunner.Common.Interfaces;
 
 public interface ICommunicationHub
 {

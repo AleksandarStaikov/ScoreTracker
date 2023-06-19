@@ -1,4 +1,4 @@
-﻿using ScoreTracker.ConsoleRunner.Common;
+﻿using ScoreTracker.ConsoleRunner.Common.Communication;
 using ScoreTracker.ConsoleRunner.Common.Interfaces;
 using ScoreTracker.ConsoleRunner.Runner.Interfaces;
 

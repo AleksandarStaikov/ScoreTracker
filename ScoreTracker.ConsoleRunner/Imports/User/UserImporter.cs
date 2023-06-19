@@ -1,5 +1,5 @@
 ﻿using ScoreTracker.Common.Models.User;
-using ScoreTracker.ConsoleRunner.Common;
+using ScoreTracker.ConsoleRunner.Common.Communication;
 using ScoreTracker.ConsoleRunner.Common.Interfaces;
 using ScoreTracker.ConsoleRunner.Imports.Interfaces;
 using ScoreTracker.Interfaces;
@@ -10,6 +10,7 @@ namespace ScoreTracker.ConsoleRunner.Imports.User;
 public class UserImporter : IImporter
 {
     private const string ImportRandomArgument = "random-count";
+    private const string UsernameArgument = "username";
     private const string ImportFromFileArgument = "file-name";
 
     private readonly ICommunicationHub _communicationHub;
@@ -21,11 +22,11 @@ public class UserImporter : IImporter
         _userService = userService;
     }
 
+    public bool CanImport(CommandBody commandBody)
+        => commandBody.HasPositionalArgument("user", 0);
 
     public void Import(CommandBody commandBody)
     {
-        if (!ParametersValid(commandBody)) return;
-
         var dataSetToImport = GetDataSet(commandBody);
 
         var importTask = ImportDataSet(dataSetToImport);
@@ -48,7 +49,12 @@ public class UserImporter : IImporter
             return ImportUsersFromFile(filename!);
         }
 
-        return Enumerable.Empty<CreateUserDto>();   
+        if (commandBody.HasNamedArgument(UsernameArgument, out string? username))
+        {
+            return new[] { new CreateUserDto { AuthId = username!, Username = username! } };
+        }
+
+        return Enumerable.Empty<CreateUserDto>();
     }
 
     private IEnumerable<CreateUserDto> ImportUsersFromFile(string filename)
@@ -87,25 +93,4 @@ public class UserImporter : IImporter
 
         _communicationHub.PublichMessage(sb.ToString(), MessageSeverity.Success);
     }
-
-    private bool ParametersValid(CommandBody commandBody)
-    {
-        if (HasBothImportControllFlags(commandBody) ||
-            HasNoneImportControllFlags(commandBody))
-        {
-            _communicationHub.PublichMessage("You must speficy either a '--file-name <name-of-file>' file to import or use the -r flag that will generate random users");
-            return false;
-        }
-
-        return true;
-    }
-
-    private static bool HasBothImportControllFlags(CommandBody commandBody)
-        => commandBody.HasNamedArgument(ImportRandomArgument) &&
-            commandBody.HasNamedArgument(ImportFromFileArgument);
-
-    private bool HasNoneImportControllFlags(CommandBody commandBody)
-        => !commandBody.HasNamedArgument(ImportRandomArgument) &&
-            !commandBody.HasNamedArgument(ImportFromFileArgument);
-
 }
