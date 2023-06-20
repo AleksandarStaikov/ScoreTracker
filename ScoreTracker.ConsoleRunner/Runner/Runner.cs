@@ -27,23 +27,23 @@ public class Runner : IRunner
         return this;
     }
 
-    public void Run(string[] commandSegments)
+    public async Task Run(string[] commandSegments)
     {
         while (commandSegments.Any())
         {
-            ProcessCommand(commandSegments);
+            await ProcessCommand(commandSegments);
 
-            commandSegments = Console.ReadLine()
+            commandSegments = Console.ReadLine()!
                 .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 
-    private void ProcessCommand(string[] commandSegments)
+    private Task ProcessCommand(string[] commandSegments)
     {
         var commandBody = new CommandBody(commandSegments);
 
-        _commandFactory
+        return _commandFactory
                 .ResolveCommand(commandBody)?
-                .Execute(commandBody);
+                .Execute(commandBody) ?? Task.CompletedTask;
     }
 }

@@ -6,5 +6,5 @@ public interface IImporter
 {
     bool CanImport(CommandBody commandBody);
 
-    void Import(CommandBody commandBody);
+    Task Import(CommandBody commandBody);
 }

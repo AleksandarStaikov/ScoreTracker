@@ -3,5 +3,5 @@
 public interface IRunner
 {
     IRunner SetupRunner();
-    void Run(string[] initialCommand);
+    Task Run(string[] initialCommand);
 }

@@ -25,13 +25,11 @@ public class UserImporter : IImporter
     public bool CanImport(CommandBody commandBody)
         => commandBody.HasPositionalArgument("user", 0);
 
-    public void Import(CommandBody commandBody)
+    public async Task Import(CommandBody commandBody)
     {
         var dataSetToImport = GetDataSet(commandBody);
 
-        var importTask = ImportDataSet(dataSetToImport);
-
-        importTask.Wait();
+        await ImportDataSet(dataSetToImport);
     }
 
     private IEnumerable<CreateUserDto> GetDataSet(CommandBody commandBody)
@@ -59,7 +57,7 @@ public class UserImporter : IImporter
 
     private IEnumerable<CreateUserDto> ImportUsersFromFile(string filename)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not yet supported");
     }
 
     private IEnumerable<CreateUserDto> GenerateRandomUsers(int count)

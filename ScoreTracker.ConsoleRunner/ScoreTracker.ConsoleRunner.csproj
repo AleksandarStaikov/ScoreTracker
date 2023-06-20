@@ -32,8 +32,4 @@
     <ProjectReference Include="..\ScoreTracker\ScoreTracker.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Imports\Team\" />
-  </ItemGroup>
-
 </Project>

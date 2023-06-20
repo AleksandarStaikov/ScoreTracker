@@ -4,11 +4,11 @@ using ScoreTracker.ConsoleRunner.Runner.Interfaces;
 
 var initialCommand = new[] { "help" }; //args;
 
-DependencyInjectionProvider
-    .GetServiceProvider()
-    .GetRequiredService<IRunner>()
-    .SetupRunner()
-    .Run(initialCommand);
+await DependencyInjectionProvider
+        .GetServiceProvider()
+        .GetRequiredService<IRunner>()
+        .SetupRunner()
+        .Run(initialCommand);
 
 //BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
 

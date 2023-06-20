@@ -15,9 +15,11 @@ public class Help : ICommand
         _communication = communication;
     }
 
-    public void Execute(CommandBody commandSegments)
+    public Task Execute(CommandBody commandSegments)
     {
         _communication.PublichMessage(GetMessage());
+
+        return Task.CompletedTask;
     }
 
     private string GetMessage()

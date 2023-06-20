@@ -18,13 +18,13 @@ public class Import : ICommand
         _communicationHub = communicationHub;
     }
 
-    public void Execute(CommandBody commandBody)
+    public async Task Execute(CommandBody commandBody)
     {
-        if (IsHelp(commandBody)) { Help(); }
+        if (IsHelp(commandBody)) { Help(); return; }
 
         var importer = _importers.Single(x => x.CanImport(commandBody));
 
-        importer.Import(commandBody);
+        await importer.Import(commandBody);
     }
 
     private void Help()
